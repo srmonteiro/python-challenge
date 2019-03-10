@@ -1,5 +1,5 @@
-#________________________________________________________________________________________# 
-#________________________________________________________________________________________# 
+#__Thank yous and Acknowledgements_______________________________________________________# 
+#__I'm still having trouble with building loops, Alex and Ashraf helped tremendously_____# 
 #________________________________________________________________________________________# 
 #________________________________________________________________________________________# 
 #________________________________________________________________________________________# 
@@ -8,26 +8,14 @@
 #________________________________________________________________________________________#  Import Modules
 import os #______________________________________________________________________________#  Import os to assist with reading relative paths on different computers
 import csv #_____________________________________________________________________________#  Import csv so that we can read content of election_data.csv
-import statistics #______________________________________________________________________#  Import csv to perform operations like average, min, and max
 
 #________________________________________________________________________________________# 
 #________________________________________________________________________________________#  Declaring Variables that will impact all code, 
 row = [] #_______________________________________________________________________________#  Declaring 'row' as an empty list that will later point to each row in the csv, also could be called "votes"
 candidates = [] #________________________________________________________________________#  Declaring 'candidate' as an empty list that will later point to each candidate the csv
-candidatevotecast = []
-vote_count = 0 #_________________________________________________________________________#  Declaring 'vote_count' as a integer with a value of 0
-electedvotescast = 0
-#monthly_profit_change = 0 #______________________________________________________________#  Declaring 'monthly_profit_change' to calculate Profit/Loss each month and average Profit/Loss 
-#monthly_profit_change_list = [] #________________________________________________________#
-#monthly_profit_lastmonth = 0 #___________________________________________________________#  
-#monthly_profit_thismonth = 0 #___________________________________________________________#  
-#avg_monthly_profit_change = 0 #__________________________________________________________# 
-#max_monthly_profit_increase = 0 #________________________________________________________# 
-#max_monthly_profit_decrease = 0 #________________________________________________________#
-#max_increase_month = () #________________________________________________________________#
-#max_decrease_month = () #________________________________________________________________#
-#month = [] #_____________________________________________________________________________#
-#skip_start_month = True
+candidatevotecast = [] #_________________________________________________________________#  Declaring 'candidatevotecast' as an empty list that will later point to each candidate the c
+vote_count = 0 #_________________________________________________________________________#  Declaring 'vote_count' as a integer with a value of 0 to start sum of vote count
+electedvotescast = 0 #___________________________________________________________________#  Declaring 'electedvotescast' as a integer with a value of 0 to start sum of electedvotescast per candidate
 
 #________________________________________________________________________________________#  
 #________________________________________________________________________________________#  Locating relative path so that this code will work on both the Poll and Election Data
@@ -38,38 +26,52 @@ with open(csvpath) as csv_file: #_______________________________________________
     # print(csvreader) #_________________________________________________________________#  Test Row _ confirmed that we are reading the file print(csvreader) and skipping headers
     
     for row in csvreader: #______________________________________________________________#  Initiate for loop to cycle through values in each row
-        vote_count += 1
-        if candidates.count(row[2]) > 0: #_______________________________________________#  populate list of candidate names across each votes
-            candidatevotecast[candidates.index(row[2])] += 1
+        vote_count += 1 #________________________________________________________________#  Continuously sum each row as a way to count total votes
+        if candidates.count(row[2]) > 0: #_______________________________________________#  Loop to perform action as loong as the candidate column is blank
+            candidatevotecast[candidates.index(row[2])] += 1 #___________________________#  Continuously sum each count of a candidate's name as a vote count and index within the candidatevotecast list
         else: 
-            candidates.append(row[2])
-            candidatevotecast.append(1)
-#       print(candidates) #______________________________________________________________#   Test Row _ confirmed that we are reading the candidate name column, and that the column is in the winner order, prints winner order index for ever vote cast
-#       print(candidatevotecast) #_______________________________________________________#   Test Row _ confirmed that we are counting votes cast for each candidate in our index, prints running total
+            candidates.append(row[2]) #__________________________________________________#  Store all of the candidate names as a list
+            candidatevotecast.append(1) #________________________________________________#  Store all of the vote count totals as a list
+#       print(candidates) #______________________________________________________________#  Test Row _ confirmed that we are reading the candidate name column, and that the column is in the winner order, prints winner order index for ever vote cast
+#       print(candidatevotecast) #_______________________________________________________#  Test Row _ confirmed that we are counting votes cast for each candidate in our index, prints running total
 
 #________________________________________________________________________________________# 
 #________________________________________________________________________________________#  Print Blank row & Strings for the Title and Header line of the output table
-print("") #__________________________________________________________________________#  Print Blank row, stylistic only
-print("Election Results") #__________________________________________________________#  Print Title, stylistic only
-print("______________________") #____________________________________________________#  Print Line Break, stylistic only
-print("") #__________________________________________________________________________#  Print Blank row, stylistic only
-print(f'Total Votes: {vote_count}') #________________________________________________#
-print("______________________") #____________________________________________________#  Print Line Break, stylistic only
-for n in range(len(candidates)):
-    if candidatevotecast[n] > electedvotescast:
-        electedname = candidates[n]
-        electedvotescast = candidatevotecast[n]
+print("") #______________________________________________________________________________#  Print Blank row, stylistic only
+print("Election Results") #______________________________________________________________#  Print Title, stylistic only
+print("______________________") #________________________________________________________#  Print Line Break, stylistic only
+print("") #______________________________________________________________________________#  Print Blank row, stylistic only
+print(f'Total Votes: {vote_count}') #____________________________________________________#  Print "Total Votes: " and vote count result
+print("______________________") #________________________________________________________#  Print Line Break, stylistic only
+print("") #______________________________________________________________________________#  Print Blank row, stylistic only
+for n in range(len(candidates)): #_______________________________________________________#  Loop through the candidates list from the start to the end
+    print(f"{candidates[n]}: {(100*candidatevotecast[n]/vote_count):.3f}% ({candidatevotecast[n]})") # Print out Candidate Name, the calculated vote share per candidate, and the total votes each candidate received 
+    if candidatevotecast[n] > electedvotescast: #________________________________________#  The If clause sorts the candidates by number of votes they received in descending order
+        electedname = candidates[n] #____________________________________________________#  Thank you to Alex and Ashraf for the support here, 
+        electedvotescast = candidatevotecast[n] #________________________________________#  this formatting is much more efficient than anything I could come up with
+#       print(electedname) #_____________________________________________________________#  Test Row _ confirmed that we are reading the elected candidates name
+#       print(electedvotescast) #________________________________________________________#  Test Row _ confirmed that we are reading the elected candidates vote count
+
+print("______________________") #________________________________________________________#  Print Line Break, stylistic only
+print("") #______________________________________________________________________________#  Print Blank row, stylistic only
+print(f'Winner: {electedname}') #________________________________________________________#
+print("______________________") #________________________________________________________#  Print Line Break, stylistic only
+print("") #______________________________________________________________________________#  Print Blank row, stylistic only
 
 #________________________________________________________________________________________# 
 #________________________________________________________________________________________#  output results to text file
-#    text_file = open("PyBank_finalreport.txt", "w") #____________________________________#  create text file in same folder as main.py, assign variable to path
-#    text_file.write('\n') #______________________________________________________________#
-#    text_file.write('Financial Analysis\n') #____________________________________________#
-#    text_file.write('----------------------------\n') #__________________________________#
-#    text_file.write('\n') #______________________________________________________________#
-#    text_file.write('Total Months: '+str(vote_count)+'\n') #____________________________#
-#    text_file.write('Average Change: $'+'{:,.2f}'.format(avg_monthly_profit_change)+'\n')#
-#    text_file.write('Total: $'+'{:,.2f}'.format(total_profit)+'\n') #____________________#
-#    text_file.write('Greatest Increase in Profits: $'+'{:,.2f}'.format(max_monthly_profit_increase)+' ('+max_increase_month+')\n')
-#    text_file.write('Greatest Decrease in Profits: $'+'{:,.2f}'.format(max_monthly_profit_decrease)+' ('+max_decrease_month+')\n') 
-#    text_file.close() #__________________________________________________________________#
+text_file = open("PyPoll_finalvotetally.txt", "w") #_____________________________________#  create text file in same folder as main.py, assign variable to path
+text_file.write('\n') #__________________________________________________________________#  Print Break, stylistic only
+text_file.write('Election Results\n') #__________________________________________________#  Print Report header
+text_file.write('----------------------------\n') #______________________________________#  Print Line Break, stylistic only
+text_file.write('\n') #__________________________________________________________________#
+text_file.write('Total Votes: '+str(vote_count)+'\n') #__________________________________#
+text_file.write('----------------------------\n') #______________________________________#  Print Line Break, stylistic only  
+text_file.write((candidates[0])+': '+str(round((100*candidatevotecast[0]/vote_count), 4))+'% ('+str((candidatevotecast[0]))+')'+'\n')
+text_file.write((candidates[1])+': '+str(round((100*candidatevotecast[1]/vote_count), 4))+'% ('+str((candidatevotecast[1]))+')'+'\n')
+text_file.write((candidates[2])+': '+str(round((100*candidatevotecast[2]/vote_count), 4))+'% ('+str((candidatevotecast[2]))+')'+'\n')
+text_file.write((candidates[3])+': '+str(round((100*candidatevotecast[3]/vote_count), 4))+'% ('+str((candidatevotecast[3]))+')'+'\n')
+text_file.write('----------------------------\n') #______________________________________#  Print Line Break, stylistic only 
+text_file.write('Winner: '+str(electedname)+'\n') #______________________________________#
+text_file.write('----------------------------\n') #______________________________________#  Print Line Break, stylistic only 
+text_file.close() #______________________________________________________________________#
